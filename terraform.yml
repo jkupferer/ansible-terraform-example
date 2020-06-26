@@ -1,0 +1,7 @@
+---
+- name: Run terraform import
+  hosts: localhost
+  connection: local
+  gather_facts: false
+  roles:
+  - terraform

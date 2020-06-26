@@ -1,0 +1,7 @@
+---
+# Terraform project directory which will store
+# terraform state.
+terraform_project_path: "{{ playbook_dir }}/terraform"
+
+# List of flavors to import
+terraform_import_flavors: []

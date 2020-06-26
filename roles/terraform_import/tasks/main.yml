@@ -1,0 +1,6 @@
+---
+- name: Import flavors
+  include_tasks: import-flavors.yml
+  loop: "{{ terraform_import_flavors }}"
+  loop_control:
+    loop_var: _flavor

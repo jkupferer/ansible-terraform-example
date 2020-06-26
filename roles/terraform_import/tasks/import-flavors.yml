@@ -1,0 +1,23 @@
+---
+- name: Get flavor from OpenStack
+  os_flavor_info:
+    name: "{{ _flavor }}"
+  register: r_os_flavor_info
+  failed_when: r_os_flavor_info.openstack_flavors | length != 1
+
+- name: Import flavor {{ _flavor }}
+  command:
+    chdir: "{{ terraform_project_path }}"
+    cmd: >-
+      terraform import
+      openstack_compute_flavor_v2.{{ _tf_flavor_name }}
+      {{ _flavor_id }}
+  vars:
+    _flavor_id: "{{ r_os_flavor_info.openstack_flavors[0].id }}"
+    _tf_flavor_name: "{{ _flavor | replace('.', '-') }}"
+  register: r_terraform_import
+  changed_when: >-
+    r_terraform_import.rc == 0
+  failed_when: >-
+    r_terraform_import.rc != 0 and
+    'Terraform is already managing a remote object' not in r_terraform_import.stderr
